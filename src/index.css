@@ -92,9 +92,11 @@ button {
   border-radius: 3px;
 }
 
-@media (max-width: 500px) {
+@media (max-width: 700px) {
   h1 {
     font-size: 25px;
+    display: flex;
+    padding-left: 20px;
   }
   .chat_messages {
     height: 40vh;
