@@ -9,6 +9,9 @@ class App extends Component {
 
     this.state = {
       inputStatus: "left",
+      theme: localStorage.getItem("theme")
+        ? localStorage.getItem("theme")
+        : "light",
       modalOpen: false,
       modalClearOpen: false,
       chat: [
@@ -58,10 +61,14 @@ class App extends Component {
       });
     }
   };
-  handleClear = event => {
+  handleClear = () => {
     this.setState({ chat: [], modalClearOpen: false });
   };
-
+  toggleLight = () => {
+    let themeColor = this.state.theme === "light" ? "dark" : "light";
+    localStorage.setItem("theme", themeColor);
+    this.setState({ theme: themeColor });
+  };
   componentDidMount() {
     window.addEventListener("keydown", e => {
       if (!this.refs.chat_input.value) {
@@ -73,11 +80,11 @@ class App extends Component {
 
   render() {
     const modalStyles = {
-      modal: { padding: "20px" },
+      modal: { padding: "0 20px 20px" },
       closeButton: { cursor: "pointer" }
     };
     return (
-      <div className="App">
+      <div className={"App " + this.state.theme}>
         <h1>
           Selftalker{" "}
           <span role="img" aria-label="meditation">
@@ -91,25 +98,27 @@ class App extends Component {
               <div className={message.type + " message"}>{message.text}</div>
             ))}
           </div>
-
-          <input
-            className="chat_input"
-            ref="chat_input"
-            onKeyPress={event => {
-              if (event.key === "Enter") {
-                this.handleInput(event);
-              }
-            }}
-          />
-          <span
-            className="chat_selector"
-            onClick={this.changeSelector}
-            role="img"
-          >
-            {this.state.inputStatus === "left" ? "⬅️" : "➡️"}
-          </span>
+          <div className="chat_input">
+            <input
+              className="chat_input"
+              ref="chat_input"
+              placeholder="Write a message..."
+              onKeyPress={event => {
+                if (event.key === "Enter") {
+                  this.handleInput(event);
+                }
+              }}
+            />
+            <span
+              className="chat_selector"
+              onClick={this.changeSelector}
+              role="img"
+            >
+              {this.state.inputStatus === "left" ? "⬅️" : "➡️"}
+            </span>
+          </div>
         </div>
-        <div class="buttons">
+        <div className="buttons">
           <span
             className="info"
             onClick={this.onOpenModal}
@@ -118,6 +127,15 @@ class App extends Component {
             aria-label="info"
           >
             ℹ️
+          </span>
+          <span
+            className="darkmode"
+            onClick={this.toggleLight}
+            alt="darkmode"
+            role="img"
+            aria-label="moon"
+          >
+            {this.state.theme === "light" ? "🌚" : "🌝"}
           </span>
           <span
             className="clear"
