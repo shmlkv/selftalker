@@ -43,10 +43,12 @@ code {
 .left {
   align-self: flex-start;
   background: #fff;
+  text-align: left;
 }
 .right {
   align-self: flex-end;
   background: rgb(219, 255, 187);
+  text-align: right;
 }
 
 .chat_input {
