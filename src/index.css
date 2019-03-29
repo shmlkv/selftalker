@@ -68,6 +68,7 @@ code {
   top: 20px;
   right: 20px;
   display: flex;
+  line-height: 1;
 }
 .buttons * {
   cursor: pointer;
@@ -79,4 +80,13 @@ button {
   cursor: pointer;
   border: 1px solid #ccc;
   border-radius: 3px;
+}
+
+@media (max-width: 500px) {
+  h1 {
+    font-size: 25px;
+  }
+  .chat_messages {
+    height: 40vh;
+  }
 }

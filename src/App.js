@@ -74,7 +74,7 @@ class App extends Component {
   render() {
     const { open } = this.state;
     const modalStyles = {
-      modal: { "min-width": "500px" },
+      modal: { padding: "20px" },
       closeButton: { cursor: "pointer" }
     };
     return (
