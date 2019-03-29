@@ -37,7 +37,7 @@ class App extends Component {
   };
   changeSelector = () => {
     this.setState({
-      inputStatus: this.state.inputStatus == "left" ? "right" : "left"
+      inputStatus: this.state.inputStatus === "left" ? "right" : "left"
     });
   };
   handleInput = event => {
@@ -65,21 +65,25 @@ class App extends Component {
   componentDidMount() {
     window.addEventListener("keydown", e => {
       if (!this.refs.chat_input.value) {
-        if (e.key == "ArrowLeft") this.setState({ inputStatus: "left" });
-        if (e.key == "ArrowRight") this.setState({ inputStatus: "right" });
+        if (e.key === "ArrowLeft") this.setState({ inputStatus: "left" });
+        if (e.key === "ArrowRight") this.setState({ inputStatus: "right" });
       }
     });
   }
 
   render() {
-    const { open } = this.state;
     const modalStyles = {
       modal: { padding: "20px" },
       closeButton: { cursor: "pointer" }
     };
     return (
       <div className="App">
-        <h1 role="img">Selftalker 🧘🏻‍♂️</h1>
+        <h1>
+          Selftalker{" "}
+          <span role="img" aria-label="meditation">
+            🧘🏻‍♂️
+          </span>
+        </h1>
         <p>Sometimes you need to talk to yourself</p>
         <div className="chat">
           <div className="chat_messages" id="chat_messages">
@@ -102,7 +106,7 @@ class App extends Component {
             onClick={this.changeSelector}
             role="img"
           >
-            {this.state.inputStatus == "left" ? "⬅️" : "➡️"}
+            {this.state.inputStatus === "left" ? "⬅️" : "➡️"}
           </span>
         </div>
         <div class="buttons">
@@ -111,6 +115,7 @@ class App extends Component {
             onClick={this.onOpenModal}
             alt="Info"
             role="img"
+            aria-label="info"
           >
             ℹ️
           </span>
@@ -119,6 +124,7 @@ class App extends Component {
             onClick={this.onOpenModalClear}
             alt="Clear chat"
             role="img"
+            aria-label="trash"
           >
             🗑
           </span>
@@ -129,7 +135,12 @@ class App extends Component {
           center
           styles={modalStyles}
         >
-          <h2>ℹ️</h2>
+          <h2>
+            {" "}
+            <span role="img" aria-label="info">
+              ℹ️
+            </span>
+          </h2>
           <p>
             Use <code>←</code> <code>→</code> with empty input to change the
             direction of the message.
