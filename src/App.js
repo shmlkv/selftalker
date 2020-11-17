@@ -6,7 +6,7 @@ import "./App.css";
 class App extends Component {
   constructor(props) {
     super(props);
-
+    let localChat = localStorage.getItem("chat");
     this.state = {
       inputStatus: "left",
       theme: localStorage.getItem("theme")
@@ -14,13 +14,15 @@ class App extends Component {
         : "light",
       modalOpen: false,
       modalClearOpen: false,
-      chat: [
-        { type: "left", text: "What do you want?" },
-        {
-          type: "right",
-          text: "I wanted to ask about the meaning of my life"
-        }
-      ]
+      chat: localChat
+        ? JSON.parse(localChat)
+        : [
+            ({ type: "left", text: "What do you want?" },
+            {
+              type: "right",
+              text: "I wanted to ask about the meaning of my life",
+            }),
+          ],
     };
     this.handleInput = this.handleInput.bind(this);
   }
@@ -40,24 +42,25 @@ class App extends Component {
   };
   changeSelector = () => {
     this.setState({
-      inputStatus: this.state.inputStatus === "left" ? "right" : "left"
+      inputStatus: this.state.inputStatus === "left" ? "right" : "left",
     });
   };
-  handleInput = event => {
+  handleInput = (event) => {
     if (event.target.value) {
       let newState = this.state.chat;
 
       newState.push({
         type: this.state.inputStatus,
-        text: event.target.value
+        text: event.target.value,
       });
 
+      localStorage.setItem("chat", JSON.stringify(newState));
       this.setState({
-        chat: newState
+        chat: newState,
       });
       this.refs.chat_input.value = "";
       animateScroll.scrollToBottom({
-        containerId: "chat_messages"
+        containerId: "chat_messages",
       });
     }
   };
@@ -70,7 +73,7 @@ class App extends Component {
     this.setState({ theme: themeColor });
   };
   componentDidMount() {
-    window.addEventListener("keydown", e => {
+    window.addEventListener("keydown", (e) => {
       if (!this.refs.chat_input.value) {
         if (e.key === "ArrowLeft") this.setState({ inputStatus: "left" });
         if (e.key === "ArrowRight") this.setState({ inputStatus: "right" });
@@ -81,7 +84,7 @@ class App extends Component {
   render() {
     const modalStyles = {
       modal: { padding: "0 20px 20px" },
-      closeButton: { cursor: "pointer" }
+      closeButton: { cursor: "pointer" },
     };
     return (
       <div className={"App " + this.state.theme}>
@@ -94,7 +97,7 @@ class App extends Component {
         <p>Sometimes you need to talk to yourself</p>
         <div className="chat">
           <div className="chat_messages" id="chat_messages">
-            {this.state.chat.map(message => (
+            {this.state.chat.map((message) => (
               <div className={message.type + " message"}>{message.text}</div>
             ))}
           </div>
@@ -103,7 +106,7 @@ class App extends Component {
               className="chat_input"
               ref="chat_input"
               placeholder="Write a message..."
-              onKeyPress={event => {
+              onKeyPress={(event) => {
                 if (event.key === "Enter") {
                   this.handleInput(event);
                 }
